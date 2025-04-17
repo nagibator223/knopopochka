@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Кнопка и Звания ВС РФ</title>
+  <style>
+    body {
+      background-image: url('https://skrinshoter.ru/s/170425/sTQFGYcL.jpg?download=1&name=%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82-17-04-2025%2011:51:17.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      font-size: 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    #counter, #rank, #info, #progressText {
+      margin-top: 10px;
+      font-size: 20px;
+      z-index: 10;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 48px;
+      animation: flyUp 2s ease-out forwards;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes flyUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-200px) scale(1.5) rotate(360deg);
+      }
+    }
+
+    #progressBarContainer {
+      width: 300px;
+      height: 20px;
+      background-color: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background-color: green;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <button id="redButton">Нажми меня</button>
+  <div id="counter">Нажатий: 0</div>
+  <div id="rank">Звание: Рядовой</div>
+  <div id="progressText">До следующего звания: 10 нажатий</div>
+  <div id="progressBarContainer">
+    <div id="progressBar"></div>
+  </div>
+  <div id="info">Каждые 10 нажатий — новое звание!</div>
+
+  <script>
+    const emojis = ["😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "🙃", "😉", "😊", "😇", "🥰", "😍", "🤩", "😘", "😗", "☺️", "😚", "😙", "😋", "😛", "😜", "🤪", "😝", "🤑", "🤗", "🤭", "🤫", "🤔", "🫡", "🤐", "🤨", "😐", "😑", "😶", "😏", "😒", "🙄", "😬", "🤥", "😌", "😔", "😪", "🤤", "😴", "😷", "🤒", "🤕", "🤢", "🤮", "🤧", "🥵", "🥶", "🥴", "😵", "🤯", "🤠", "🥳", "😎", "🤓", "🧐", "😕", "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧", "😨", "😰", "😥"];
+    const ranks = ["Рядовой", "Ефрейтор", "Младший сержант", "Сержант", "Старший сержант", "Старшина", "Прапорщик", "Старший прапорщик", "Младший лейтенант", "Лейтенант", "Старший лейтенант", "Капитан", "Майор", "Подполковник", "Полковник", "Генерал-майор", "Генерал-лейтенант", "Генерал-полковник", "Генерал армии"];
+    let count = 0;
+    const button = document.getElementById('redButton');
+    const counter = document.getElementById('counter');
+    const rankText = document.getElementById('rank');
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+
+    button.addEventListener('click', () => {
+      count++;
+      counter.textContent = `Нажатий: ${count}`;
+      showRandomEmoji();
+      updateRank();
+    });
+
+    function updateRank() {
+      const rankIndex = Math.floor(count / 10);
+      const currentRank = ranks[Math.min(rankIndex, ranks.length - 1)];
+      rankText.textContent = `Звание: ${currentRank}`;
+
+      const progressToNext = 10 - (count % 10);
+      if (rankIndex >= ranks.length - 1) {
+        progressText.textContent = `Максимальное звание достигнуто`;
+        progressBar.style.width = `100%`;
+        progressBar.style.backgroundColor = 'gold';
+      } else {
+        progressText.textContent = `До следующего звания: ${progressToNext} нажатий`;
+        const percent = ((count % 10) / 10) * 100;
+        progressBar.style.width = `${percent}%`;
+        progressBar.style.backgroundColor = 'green';
+      }
+    }
+
+    function showRandomEmoji() {
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      const emojiElement = document.createElement('div');
+      emojiElement.className = 'emoji';
+      emojiElement.textContent = emoji;
+      const left = Math.random() * 90 + 5;
+      emojiElement.style.left = `${left}%`;
+      emojiElement.style.top = '60%';
+      const rotation = Math.random() * 720 - 360;
+      const scale = 1 + Math.random();
+      emojiElement.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+      document.body.appendChild(emojiElement);
+      setTimeout(() => emojiElement.remove(), 2000);
+    }
+  </script>
+</body>
+</html>
